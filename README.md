@@ -2,7 +2,7 @@
 
 End-to-end QLoRA fine-tuning pipeline for **Gemma 2 9B** using Apple's **MLX** framework on Apple Silicon. Includes dataset generation, JSONL validation, LoRA training, and a multi-adapter evaluation system for comparing training intensity effects.
 
-**Use case / themed dataset:** A persona-driven Q&A dataset (corporate spokesperson character) used to explore how training intensity and dataset size affect model behaviour. Multi-adapter comparison (`light` / `medium` / `heavy`) allows systematic measurement of "saturation" — how strongly fine-tuning overrides base model tendencies.
+**Use case / themed dataset:** The dataset is styled after **Arasaka Corporation** from the *Cyberpunk* universe — a hyper-corporate entity with a distinct authoritarian voice. This makes it an ideal persona for studying fine-tuning behaviour: the base model has no strong prior alignment to this style, so any persona shift is directly attributable to training. The dataset consists of in-character Q&A from a corporate spokesperson perspective. Multi-adapter comparison (`light` / `medium` / `heavy`) allows systematic measurement of "saturation" — how strongly fine-tuning overrides base model tendencies.
 
 ## Key Features
 
