@@ -1,6 +1,17 @@
-# Arasaka Intelligence Fine-Tuning (QLoRA / MLX)
+# QLoRA Fine-Tuning Pipeline — Gemma 2 9B on Apple Silicon (MLX)
 
-Fine-tuning Gemma 2 9B as an Arasaka Corporation propaganda bot (Cyberpunk 2077) using QLoRA on Apple Silicon (MLX).
+End-to-end QLoRA fine-tuning pipeline for **Gemma 2 9B** using Apple's **MLX** framework on Apple Silicon. Includes dataset generation, JSONL validation, LoRA training, and a multi-adapter evaluation system for comparing training intensity effects.
+
+**Use case / themed dataset:** A persona-driven Q&A dataset (corporate spokesperson character) used to explore how training intensity and dataset size affect model behaviour. Multi-adapter comparison (`light` / `medium` / `heavy`) allows systematic measurement of "saturation" — how strongly fine-tuning overrides base model tendencies.
+
+## Key Features
+
+- **QLoRA via MLX** — memory-efficient fine-tuning on Apple Silicon without CUDA
+- **Gemma 2 9B** (4-bit quantised) — production-scale model running locally
+- **Dataset generator** — parameterised JSONL pipeline (`--train-size`, `--valid-size`)
+- **JSONL validator** — checks format and Gemma chat tags before training
+- **Multi-adapter comparison** — train multiple adapters at different intensities, evaluate side-by-side
+- **VS Code Tasks** — one-click training, evaluation, and data generation
 
 ---
 
@@ -109,9 +120,9 @@ Why trust Arasaka with our data and lives?<end_of_turn>
 python3 eval.py --adapters adapters/arasaka-gemma2-9b --data data/valid_large.jsonl --samples 10
 ```
 
-### Comparing "Propaganda Saturation"
+### Comparing Adapter Intensities
 
-After training multiple adapters (e.g., `arasaka-light`, `arasaka-medium`, `arasaka-heavy`), you can compare their responses to the same questions:
+Train multiple adapters at different iterations/learning rates, then compare outputs on the same prompts:
 
 ```zsh
 python3 eval.py \
@@ -136,7 +147,7 @@ python3 eval.py \
 
 The project includes `.vscode/tasks.json` with the following tasks:
 
-- **Train QLoRA (Arasaka)** – Full training session
+- **Train QLoRA** – Full training session
 - **Train QLoRA - Level 1/2/3** – Three adapters with varying intensities
 - **Compare propaganda levels** – Side-by-side comparison of multiple adapters
 - **Validate Data** – Checks JSONL format and tags

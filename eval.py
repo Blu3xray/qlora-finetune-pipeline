@@ -14,6 +14,7 @@ from pathlib import Path
 
 try:
     from mlx_lm import load, generate
+    from mlx_lm.sample_utils import make_sampler
 except ImportError:
     print("mlx_lm not installed. Run: pip install mlx-lm")
     exit(1)
@@ -65,6 +66,12 @@ def main():
     parser.add_argument("--data", type=str, default="data/valid.jsonl", help="Path to JSONL file")
     parser.add_argument("--samples", type=int, default=5, help="Number of samples to evaluate")
     parser.add_argument("--max-tokens", type=int, default=256)
+    parser.add_argument(
+        "--temp",
+        type=float,
+        default=0.0,
+        help="Sampling temperature (0.0 = deterministic / greedy).",
+    )
     args = parser.parse_args()
 
     data_path = Path(args.data)
@@ -98,6 +105,8 @@ def main():
     # Dictionary to store results for each adapter
     all_responses = {adapter: [] for adapter in adapter_paths}
 
+    sampler = make_sampler(temp=args.temp)
+
     for adapter_path in adapter_paths:
         print(f"Loading adapter: {adapter_path}...")
         model, tokenizer = load(args.model, adapter_path=adapter_path)
@@ -111,6 +120,7 @@ def main():
                 tokenizer,
                 prompt=prompt,
                 max_tokens=args.max_tokens,
+                sampler=sampler,
                 verbose=False,
             )
             all_responses[adapter_path].append(response.strip())
